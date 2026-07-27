@@ -1,21 +1,15 @@
 import cors from "cors"
 import express from "express"
 import rateLimit from "express-rate-limit"
+import { createCorsOptions } from "./config/cors.js"
 import { snippetRouter } from "./routes/snippetRoutes.js"
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler.js"
 
 export function createApp() {
   const app = express()
-  
-  const corsOptions = {
-    origin: process.env.CLIENT_URL,
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    accessControlAllowCredentials: true
-  }
 
   app.disable("x-powered-by")
-  app.use(cors(corsOptions))
+  app.use(cors(createCorsOptions()))
   app.use(express.json({ limit: "120kb" }))
   app.get("/api/health", (_request, response) => {
     response.json({ success: true, service: "notecode-api" })
