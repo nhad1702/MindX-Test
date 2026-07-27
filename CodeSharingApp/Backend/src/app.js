@@ -6,10 +6,16 @@ import { errorHandler, notFoundHandler } from "./middleware/errorHandler.js"
 
 export function createApp() {
   const app = express()
-  const allowedOrigin = (process.env.CLIENT_URL || "http://localhost:5173").replace(/\/$/, "")
+  
+  const corsOptions = {
+    origin: process.env.CLIENT_URL,
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    accessControlAllowCredentials: true
+  }
 
   app.disable("x-powered-by")
-  app.use(cors({ origin: allowedOrigin, methods: ["GET", "POST"] }))
+  app.use(cors(corsOptions))
   app.use(express.json({ limit: "120kb" }))
   app.get("/api/health", (_request, response) => {
     response.json({ success: true, service: "notecode-api" })
