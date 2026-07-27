@@ -8,8 +8,8 @@ async function startServer() {
   await connectDatabase()
 
   const app = createApp()
-  app.listen(port, () => {
-    console.log(`NoteCode API listening on http://localhost:${port}`)
+  app.listen(port, "0.0.0.0", () => {
+    console.log(`NoteCode API listening on port ${port}`)
   })
 }
 
